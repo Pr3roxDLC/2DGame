@@ -5,6 +5,7 @@ import com.sun.javafx.geom.Vec2f;
 import me.pr3.enums.Direction;
 import me.pr3.events.*;
 import me.pr3.enums.RenderLayer;
+import me.pr3.util.MathUtils;
 import me.pr3.util.render.TextureUtils;
 
 import java.util.HashSet;
@@ -52,12 +53,12 @@ public class Player extends EventListener {
 
         if(!directions.contains(Direction.UP) && !directions.contains(Direction.DOWN)){
             wishdir.y = 0;
-            yAcceleration = 0.1f;
+            yAcceleration = 0.15f;
         }
 
         if(!directions.contains(Direction.RIGHT) && !directions.contains(Direction.LEFT)){
             wishdir.x = 0;
-            xAcceleration = 0.1f;
+            xAcceleration = 0.15f;
         }
 
         velocity.x += (wishdir.x - velocity.x) * xAcceleration;
@@ -67,6 +68,11 @@ public class Player extends EventListener {
             velocity.x = 0;
             velocity.y = 0;
         }
+
+
+        velocity.x = MathUtils.clampFloat(velocity.x, -5,5 );
+        velocity.y = MathUtils.clampFloat(velocity.y, -5,5 );
+
 
         pos.x += velocity.x;
         pos.y += velocity.y;
