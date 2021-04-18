@@ -8,6 +8,7 @@ import me.pr3.enums.RenderLayer;
 import me.pr3.util.MathUtils;
 import me.pr3.util.render.TextureUtils;
 
+import java.awt.event.KeyEvent;
 import java.util.HashSet;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -19,7 +20,7 @@ public class Player extends EventListener {
     private Vec2f velocity = new Vec2f(1, -1);
     private Vec2f wishdir = new Vec2f(0, 0);
     private HashSet<Direction> directions = new HashSet<>();
-
+    private boolean sprint = false;
 
     public Player() {
 
@@ -71,9 +72,13 @@ public class Player extends EventListener {
         }
 
 
-        velocity.x = MathUtils.clampFloat(velocity.x, -5,5 );
-        velocity.y = MathUtils.clampFloat(velocity.y, -5,5 );
-
+        if(sprint) {
+            velocity.x = MathUtils.clampFloat(velocity.x, -10, 10);
+            velocity.y = MathUtils.clampFloat(velocity.y, -10, 10);
+        } else {
+            velocity.x = MathUtils.clampFloat(velocity.x, -5, 5);
+            velocity.y = MathUtils.clampFloat(velocity.y, -5, 5);
+        }
 
         pos.x += velocity.x;
         pos.y += velocity.y;
@@ -98,6 +103,9 @@ public class Player extends EventListener {
             case 39:
                 directions.add(Direction.RIGHT);
                 break;
+            case KeyEvent.VK_CONTROL:
+                sprint = true;
+                break;
         }
     }
 
@@ -117,6 +125,9 @@ public class Player extends EventListener {
                 break;
             case 39:
                 directions.remove(Direction.RIGHT);
+                break;
+            case KeyEvent.VK_CONTROL:
+                sprint = false;
                 break;
         }
     }
