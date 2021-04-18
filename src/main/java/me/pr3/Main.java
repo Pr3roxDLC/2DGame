@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import me.pr3.events.*;
 import me.pr3.enums.RenderLayer;
 import me.pr3.game.GameLogicHandler;
-import me.pr3.game.TileHandler;
 import me.pr3.util.render.TextureUtils;
 
 
@@ -19,7 +18,6 @@ public class Main extends JFrame implements Runnable, KeyListener {
 
     public static EventBus EVENT_BUS = new EventBus();
     public static GameLogicHandler GAME_LOGIC_HANDLER = new GameLogicHandler();
-    public static TileHandler TILE_HANDLER = new TileHandler();
     public static TextureUtils TEXTURE_UTILS = new TextureUtils();
     public static boolean shouldClose = false;
 
