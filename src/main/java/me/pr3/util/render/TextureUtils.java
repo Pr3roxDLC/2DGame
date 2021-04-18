@@ -35,8 +35,4 @@ public class TextureUtils extends EventListener {
       //  textureMap.put("Wall", ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Wall.png"))));
 
     }
-
-
-
-
 }
