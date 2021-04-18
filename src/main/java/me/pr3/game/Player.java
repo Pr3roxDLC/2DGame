@@ -10,6 +10,7 @@ import me.pr3.util.render.TextureUtils;
 
 import java.util.HashSet;
 
+@SuppressWarnings("UnstableApiUsage")
 public class Player extends EventListener {
 
     private float xAcceleration = 0.1f;
@@ -125,9 +126,7 @@ public class Player extends EventListener {
     public void onRender(RenderEvent e) {
 
         if (e.getRenderLayer() == RenderLayer.PLAYER) {
-
-            e.getGraphics().drawImage(TextureUtils.textureMap.get("Wall"), (int) pos.x, (int) pos.y, null);
-
+            e.getGraphics().drawImage(TextureUtils.textureMap.get("wall"), (int) pos.x, (int) pos.y, null);
         }
 
     }

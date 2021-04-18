@@ -23,6 +23,9 @@ public class Main extends JFrame implements Runnable, KeyListener {
     public static TextureUtils TEXTURE_UTILS = new TextureUtils();
     public static boolean shouldClose = false;
 
+
+    long time = System.currentTimeMillis();
+
     public static void main(String[] args) {
         Thread f = new Thread(new Main());
         f.start();

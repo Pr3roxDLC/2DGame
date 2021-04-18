@@ -9,7 +9,7 @@ import me.pr3.util.render.TextureUtils;
 
 import java.awt.*;
 import java.util.HashMap;
-
+@SuppressWarnings("UnstableApiUsage")
 public class TileHandler extends EventListener {
 
     public static HashMap<Point, Tile> tileMap = new HashMap<>();
@@ -20,7 +20,7 @@ public class TileHandler extends EventListener {
 
         for(int y = 0; y < 1080; y+=64){
             for(int x = 0; x < 1920; x +=64){
-               tileMap.put(new Point(x,y), new Tile(TextureUtils.textureMap.get("Wall"), new Point(x,y), RenderLayer.BACKGROUND));
+               tileMap.put(new Point(x,y), new Tile("floor", new Point(x,y), RenderLayer.BACKGROUND));
             }
 
         }

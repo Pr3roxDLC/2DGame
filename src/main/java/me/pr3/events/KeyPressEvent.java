@@ -9,11 +9,7 @@ public class KeyPressEvent {
         return key;
     }
 
-    public void setKey(int key) {
-        this.key = key;
-    }
-
-    int key;
+    private int key;
 
     public KeyPressEvent(int key){
         this.key = key;

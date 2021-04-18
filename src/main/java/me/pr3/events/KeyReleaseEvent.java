@@ -6,11 +6,7 @@ public class KeyReleaseEvent {
         return key;
     }
 
-    public void setKey(int key) {
-        this.key = key;
-    }
-
-    int key;
+    private int key;
 
     public KeyReleaseEvent(int key){
 
