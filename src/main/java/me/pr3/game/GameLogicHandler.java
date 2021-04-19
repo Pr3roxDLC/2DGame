@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("UnstableApiUsage")
 public class GameLogicHandler extends EventListener {
 
     private ArrayList<Player> players = new ArrayList<>();
@@ -44,7 +45,6 @@ public class GameLogicHandler extends EventListener {
             }
 
         }
-
 
         for(int x = 0; x < 5; x++){
 
