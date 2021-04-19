@@ -1,0 +1,18 @@
+Index: src/main/java/me/pr3/util/render/TextureUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package me.pr3.util.render;\r\n\r\nimport com.google.common.eventbus.Subscribe;\r\nimport me.pr3.events.InitializationEvent;\r\nimport me.pr3.events.EventListener;\r\n\r\nimport javax.imageio.ImageIO;\r\nimport java.awt.image.BufferedImage;\r\nimport java.io.*;\r\nimport java.net.URL;\r\nimport java.util.*;\r\n\r\n@SuppressWarnings(\"UnstableApiUsage\")\r\npublic class TextureUtils extends EventListener {\r\n\r\n    public static HashMap<String, BufferedImage> textureMap = new HashMap<>();\r\n\r\n    @Subscribe\r\n    public void onInit(InitializationEvent.PRE e) throws IOException {\r\n\r\n        URL url = getClass().getClassLoader().getResource(\"dummy.png\");\r\n        if(url == null){\r\n            System.out.println(\"[Error]: Failed to Locate Resources, exiting game\");\r\n            System.exit(1);\r\n        }\r\n        String processedURL = url.getPath().split(\"dummy.png\")[0];\r\n        File folder = new File(processedURL);\r\n        for(File file : Objects.requireNonNull(folder.listFiles())){\r\n            if(!file.isDirectory()) {\r\n                textureMap.put(file.getName().split(\".png\")[0].toLowerCase(), ImageIO.read(file));\r\n            }\r\n\r\n        }\r\n\r\n      //  textureMap.put(\"Wall\", ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(\"Wall.png\"))));\r\n\r\n    }\r\n\r\n\r\n//kommentar\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/me/pr3/util/render/TextureUtils.java b/src/main/java/me/pr3/util/render/TextureUtils.java
+--- a/src/main/java/me/pr3/util/render/TextureUtils.java	(revision 6adbd3e65e3f8380d3d730b5b497dc53c8e9ed48)
++++ b/src/main/java/me/pr3/util/render/TextureUtils.java	(date 1618764182329)
+@@ -37,6 +37,6 @@
+     }
+ 
+ 
+-//kommentar
++//kommentar 123
+ 
+ }

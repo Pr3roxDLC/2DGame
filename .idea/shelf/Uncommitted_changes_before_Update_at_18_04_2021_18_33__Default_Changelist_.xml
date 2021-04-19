@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_18_04_2021_18_33_[Default_Changelist]" date="1618763637933" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_04_2021_18_33_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 18.04.2021 18:33 [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/me/pr3/game/Player.class" />
+    <option name="AFTER_PATH" value="target/classes/me/pr3/game/Player.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_04_2021_18_33_[Default_Changelist]/Player.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/me/pr3/game/TileHandler.class" />
+    <option name="AFTER_PATH" value="target/classes/me/pr3/game/TileHandler.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_04_2021_18_33_[Default_Changelist]/TileHandler.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/me/pr3/game/Player$1.class" />
+    <option name="AFTER_PATH" value="target/classes/me/pr3/game/Player$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_04_2021_18_33_[Default_Changelist]/Player$1.class" />
+  </binary>
+</changelist>

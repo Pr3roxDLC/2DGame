@@ -1,0 +1,107 @@
+Index: src/main/java/me/pr3/game/Player.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package me.pr3.game;\r\n\r\nimport com.google.common.eventbus.Subscribe;\r\nimport com.sun.javafx.geom.Vec2f;\r\nimport me.pr3.enums.Direction;\r\nimport me.pr3.events.*;\r\nimport me.pr3.enums.RenderLayer;\r\nimport me.pr3.util.MathUtils;\r\nimport me.pr3.util.render.TextureUtils;\r\n\r\nimport java.util.HashSet;\r\n\r\npublic class Player extends EventListener {\r\n\r\n    private float xAcceleration = 0.1f;\r\n    private float yAcceleration = 0.1f;\r\n    private Vec2f pos = new Vec2f(100, 100);\r\n    private Vec2f velocity = new Vec2f(1, -1);\r\n    private Vec2f wishdir = new Vec2f(0, 0);\r\n    private HashSet<Direction> directions = new HashSet<>();\r\n\r\n\r\n    public Player() {\r\n\r\n\r\n    }\r\n\r\n\r\n    @Subscribe\r\n    public void onUpdate(UpdateEvent e) {\r\n\r\n        for (Direction dir : directions) {\r\n\r\n            switch (dir) {\r\n                case UP:\r\n                    wishdir.y = -10;\r\n                    break;\r\n                case DOWN:\r\n                    wishdir.y = 10;\r\n                    break;\r\n                case RIGHT:\r\n                    wishdir.x = 10;\r\n                    break;\r\n                case LEFT:\r\n                    wishdir.x = -10;\r\n                    break;\r\n            }\r\n\r\n        }\r\n\r\n        xAcceleration = 0.05f;\r\n        yAcceleration = 0.05f;\r\n\r\n        if(!directions.contains(Direction.UP) && !directions.contains(Direction.DOWN)){\r\n            wishdir.y = 0;\r\n            yAcceleration = 0.15f;\r\n        }\r\n\r\n        if(!directions.contains(Direction.RIGHT) && !directions.contains(Direction.LEFT)){\r\n            wishdir.x = 0;\r\n            xAcceleration = 0.15f;\r\n        }\r\n\r\n        velocity.x += (wishdir.x - velocity.x) * xAcceleration;\r\n        velocity.y += (wishdir.y - velocity.y) * yAcceleration;\r\n\r\n        if(Math.abs(velocity.x) < 0.5 && Math.abs(velocity.y) < 0.5){\r\n            velocity.x = 0;\r\n            velocity.y = 0;\r\n        }\r\n\r\n\r\n        velocity.x = MathUtils.clampFloat(velocity.x, -5,5 );\r\n        velocity.y = MathUtils.clampFloat(velocity.y, -5,5 );\r\n\r\n\r\n        pos.x += velocity.x;\r\n        pos.y += velocity.y;\r\n\r\n\r\n    }\r\n\r\n\r\n    @Subscribe\r\n    public void onKeyPress(KeyPressEvent e) {\r\n\r\n        switch (e.getKey()) {\r\n            case 38:\r\n                directions.add(Direction.UP);\r\n                break;\r\n            case 37:\r\n                directions.add(Direction.LEFT);\r\n                break;\r\n            case 40:\r\n                directions.add(Direction.DOWN);\r\n                break;\r\n            case 39:\r\n                directions.add(Direction.RIGHT);\r\n                break;\r\n        }\r\n    }\r\n\r\n\r\n    @Subscribe\r\n    public void onKeyRelease(KeyReleaseEvent e) {\r\n\r\n        switch (e.getKey()) {\r\n            case 38:\r\n                directions.remove(Direction.UP);\r\n                break;\r\n            case 37:\r\n                directions.remove(Direction.LEFT);\r\n                break;\r\n            case 40:\r\n                directions.remove(Direction.DOWN);\r\n                break;\r\n            case 39:\r\n                directions.remove(Direction.RIGHT);\r\n                break;\r\n        }\r\n    }\r\n\r\n\r\n    @Subscribe\r\n    public void onRender(RenderEvent e) {\r\n\r\n        if (e.getRenderLayer() == RenderLayer.PLAYER) {\r\n\r\n            e.getGraphics().drawImage(TextureUtils.textureMap.get(\"Wall\"), (int) pos.x, (int) pos.y, null);\r\n\r\n        }\r\n\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/me/pr3/game/Player.java b/src/main/java/me/pr3/game/Player.java
+--- a/src/main/java/me/pr3/game/Player.java	(revision 8f48042c97fa38033f8b269d43942ea00d3e5066)
++++ b/src/main/java/me/pr3/game/Player.java	(date 1618762039864)
+@@ -8,6 +8,7 @@
+ import me.pr3.util.MathUtils;
+ import me.pr3.util.render.TextureUtils;
+ 
++import java.awt.event.KeyEvent;
+ import java.util.HashSet;
+ 
+ public class Player extends EventListener {
+@@ -18,6 +19,7 @@
+     private Vec2f velocity = new Vec2f(1, -1);
+     private Vec2f wishdir = new Vec2f(0, 0);
+     private HashSet<Direction> directions = new HashSet<>();
++    private boolean sprint = false;
+ 
+ 
+     public Player() {
+@@ -70,9 +72,13 @@
+         }
+ 
+ 
+-        velocity.x = MathUtils.clampFloat(velocity.x, -5,5 );
+-        velocity.y = MathUtils.clampFloat(velocity.y, -5,5 );
+-
++        if(sprint) {
++            velocity.x = MathUtils.clampFloat(velocity.x, -10, 10);
++            velocity.y = MathUtils.clampFloat(velocity.y, -10, 10);
++        } else {
++            velocity.x = MathUtils.clampFloat(velocity.x, -5, 5);
++            velocity.y = MathUtils.clampFloat(velocity.y, -5, 5);
++        }
+ 
+         pos.x += velocity.x;
+         pos.y += velocity.y;
+@@ -97,6 +103,9 @@
+             case 39:
+                 directions.add(Direction.RIGHT);
+                 break;
++            case KeyEvent.VK_CONTROL:
++                sprint = true;
++                break;
+         }
+     }
+ 
+@@ -117,6 +126,9 @@
+             case 39:
+                 directions.remove(Direction.RIGHT);
+                 break;
++            case KeyEvent.VK_CONTROL:
++                sprint = false;
++                break;
+         }
+     }
+ 
+Index: src/main/java/me/pr3/game/TileHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package me.pr3.game;\r\n\r\n\r\nimport com.google.common.eventbus.Subscribe;\r\nimport me.pr3.events.EventListener;\r\nimport me.pr3.events.InitializationEvent;\r\nimport me.pr3.enums.RenderLayer;\r\nimport me.pr3.util.render.TextureUtils;\r\n\r\nimport java.awt.*;\r\nimport java.util.HashMap;\r\n\r\npublic class TileHandler extends EventListener {\r\n\r\n    public static HashMap<Point, Tile> tileMap = new HashMap<>();\r\n\r\n\r\n    @Subscribe\r\n    public void onInitPost(InitializationEvent.POST e) {\r\n\r\n        for(int y = 0; y < 1080; y+=64){\r\n            for(int x = 0; x < 1920; x +=64){\r\n               tileMap.put(new Point(x,y), new Tile(TextureUtils.textureMap.get(\"Wall\"), new Point(x,y), RenderLayer.BACKGROUND));\r\n            }\r\n\r\n        }\r\n\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/me/pr3/game/TileHandler.java b/src/main/java/me/pr3/game/TileHandler.java
+--- a/src/main/java/me/pr3/game/TileHandler.java	(revision 8f48042c97fa38033f8b269d43942ea00d3e5066)
++++ b/src/main/java/me/pr3/game/TileHandler.java	(date 1618763303650)
+@@ -6,6 +6,7 @@
+ import me.pr3.events.InitializationEvent;
+ import me.pr3.enums.RenderLayer;
+ import me.pr3.util.render.TextureUtils;
++import java.util.Random;
+ 
+ import java.awt.*;
+ import java.util.HashMap;
+@@ -13,6 +14,9 @@
+ public class TileHandler extends EventListener {
+ 
+     public static HashMap<Point, Tile> tileMap = new HashMap<>();
++    Random rand = new Random();
++    int random;
++    int maxRandom = 3;
+ 
+ 
+     @Subscribe
+@@ -20,9 +24,13 @@
+ 
+         for(int y = 0; y < 1080; y+=64){
+             for(int x = 0; x < 1920; x +=64){
+-               tileMap.put(new Point(x,y), new Tile(TextureUtils.textureMap.get("Wall"), new Point(x,y), RenderLayer.BACKGROUND));
++
++                random = rand.nextInt(maxRandom);
++
++                if(random == 0) {
++                    tileMap.put(new Point(x, y), new Tile(TextureUtils.textureMap.get("Wall"), new Point(x, y), RenderLayer.BACKGROUND));
++                }
+             }
+-
+         }
+ 
+     }
