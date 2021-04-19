@@ -14,7 +14,7 @@ import java.awt.*;
 public abstract class Tile extends EventListener {
 
     protected String texture;
-    protected BoundingBox boundingBox;
+    public BoundingBox boundingBox;
     protected RenderLayer renderLayer;
 
 

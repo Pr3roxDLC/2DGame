@@ -5,6 +5,8 @@ import javafx.geometry.BoundingBox;
 import me.pr3.enums.RenderLayer;
 import me.pr3.events.EventListener;
 import me.pr3.events.InitializationEvent;
+import me.pr3.game.entity.PassiveEnemy;
+import me.pr3.game.entity.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,19 +18,22 @@ import java.util.stream.Collectors;
 public class GameLogicHandler extends EventListener {
 
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<PassiveEnemy> passiveEnemies = new ArrayList<>();
     public static HashMap<Point, Tile> tileMap = new HashMap<>();
 
     public GameLogicHandler(){
-
-        createPlayer();
 
     }
 
 
     public void createPlayer(){
 
-        players.add(new Player());
+        players.add(new Player("wall" , 100, 100));
 
+    }
+
+    public void createPassiveEnemy(){
+        passiveEnemies.add(new PassiveEnemy("wall", 500, 200));
     }
 
 
@@ -36,8 +41,17 @@ public class GameLogicHandler extends EventListener {
         return tileMap.values().stream().filter(n -> n instanceof Wall).collect(Collectors.toCollection(HashSet::new));
     }
 
+    //return Map Border Bounding Box
+    public static BoundingBox getMapBorderBoundingBox() {
+        return new BoundingBox(64,64,1856,1016);
+    }
+
     @Subscribe
     public void onInitPost(InitializationEvent.POST e) {
+
+        createPlayer();
+        createPassiveEnemy();
+
 
         for(int y = 0; y < 1080; y+=64){
             for(int x = 0; x < 1920; x +=64){

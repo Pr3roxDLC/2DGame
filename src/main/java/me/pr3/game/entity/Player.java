@@ -1,32 +1,23 @@
-package me.pr3.game;
+package me.pr3.game.entity;
 
 import com.google.common.eventbus.Subscribe;
-import com.sun.javafx.geom.Vec2f;
 import javafx.geometry.BoundingBox;
 import me.pr3.enums.Direction;
-import me.pr3.events.*;
 import me.pr3.enums.RenderLayer;
+import me.pr3.events.*;
+import me.pr3.game.GameLogicHandler;
 import me.pr3.util.MathUtils;
 import me.pr3.util.render.TextureUtils;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.HashSet;
 
 @SuppressWarnings("UnstableApiUsage")
-public class Player extends EventListener {
+public class Player extends LivingEntity {
 
-    private float xAcceleration = 0.1f;
-    private float yAcceleration = 0.1f;
-    private Vec2f pos = new Vec2f(100, 100);
-    private Vec2f velocity = new Vec2f(1, -1);
-    private Vec2f wishdir = new Vec2f(0, 0);
-    private HashSet<Direction> directions = new HashSet<>();
     private boolean sprint = false;
 
-    public Player() {
-
-
+    public Player(String texture,int posX,int posY) {
+        super(texture, posX, posY);
     }
 
 
@@ -84,7 +75,7 @@ public class Player extends EventListener {
 
 
         //Basic Collision Check, needs much more work put into, set velocity according to wall to 0
-        //TODO Instead of returning, set the velocity component from witch the player colided with to 0, to prevent being stuck on the walls
+        //TODO Instead of returning, set the velocity component from which the player collided with to 0, to prevent being stuck on the walls
 
         if(GameLogicHandler.getCollidableTiles().stream().anyMatch(n -> n.boundingBox.intersects(new BoundingBox((int)(pos.x), (int)(pos.y + velocity.y), 64, 64)))){
             velocity.y = 0;
@@ -95,6 +86,19 @@ public class Player extends EventListener {
         }
 
         if(GameLogicHandler.getCollidableTiles().stream().anyMatch(n -> n.boundingBox.intersects(new BoundingBox((int)(pos.x + velocity.x), (int)(pos.y + velocity.y), 64, 64)))){
+            velocity.x = 0;
+            velocity.y = 0;
+        }
+
+        if(!GameLogicHandler.getMapBorderBoundingBox().intersects(new BoundingBox((int)(pos.x), (int)(pos.y + velocity.y), 64, 64))){
+           velocity.y = 0;
+        }
+
+        if(!GameLogicHandler.getMapBorderBoundingBox().intersects(new BoundingBox((int)(pos.x + velocity.x), (int)(pos.y), 64, 64))){
+           velocity.x = 0;
+        }
+
+        if(!GameLogicHandler.getMapBorderBoundingBox().intersects(new BoundingBox((int)(pos.x + velocity.x), (int)(pos.y + velocity.y), 64, 64))){
             velocity.x = 0;
             velocity.y = 0;
         }
@@ -151,14 +155,15 @@ public class Player extends EventListener {
         }
     }
 
-
     @Subscribe
     public void onRender(RenderEvent e) {
 
         if (e.getRenderLayer() == RenderLayer.PLAYER) {
-            e.getGraphics().drawImage(TextureUtils.textureMap.get("wall"), (int) pos.x, (int) pos.y, null);
+            e.getGraphics().drawImage(TextureUtils.textureMap.get(texture), (int) pos.x, (int) pos.y, null);
         }
 
     }
+
+
 
 }
