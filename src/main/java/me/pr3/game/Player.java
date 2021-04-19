@@ -85,6 +85,7 @@ public class Player extends EventListener {
 
 
         //Basic Collision Check, needs much more work put into, set velocity according to wall to 0
+        //TODO Instead of returning, set the velocity component from witch the player colided with to 0, to prevent being stuck on the walls
         Point point = new Point((int)(pos.x + velocity.x), (int)(pos.y + velocity.y));
         if(GameLogicHandler.getCollidableTiles().stream().anyMatch(n -> n.boundingBox.intersects(new BoundingBox((int)(pos.x + velocity.x), (int)(pos.y + velocity.y), 64, 64)))){
             return;
