@@ -3,7 +3,6 @@ package me.pr3.game;
 import com.google.common.eventbus.Subscribe;
 import com.sun.javafx.geom.Vec2f;
 import javafx.geometry.BoundingBox;
-import javafx.geometry.Point2D;
 import me.pr3.enums.Direction;
 import me.pr3.events.*;
 import me.pr3.enums.RenderLayer;
@@ -86,9 +85,9 @@ public class Player extends EventListener {
 
         //Basic Collision Check, needs much more work put into, set velocity according to wall to 0
         //TODO Instead of returning, set the velocity component from witch the player colided with to 0, to prevent being stuck on the walls
-        Point point = new Point((int)(pos.x + velocity.x), (int)(pos.y + velocity.y));
         if(GameLogicHandler.getCollidableTiles().stream().anyMatch(n -> n.boundingBox.intersects(new BoundingBox((int)(pos.x + velocity.x), (int)(pos.y + velocity.y), 64, 64)))){
-            return;
+            velocity.x = 0;
+            velocity.y = 0;
         }
 
 
