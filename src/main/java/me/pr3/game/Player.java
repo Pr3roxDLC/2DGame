@@ -2,12 +2,15 @@ package me.pr3.game;
 
 import com.google.common.eventbus.Subscribe;
 import com.sun.javafx.geom.Vec2f;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Point2D;
 import me.pr3.enums.Direction;
 import me.pr3.events.*;
 import me.pr3.enums.RenderLayer;
 import me.pr3.util.MathUtils;
 import me.pr3.util.render.TextureUtils;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 
@@ -79,6 +82,14 @@ public class Player extends EventListener {
             velocity.x = MathUtils.clampFloat(velocity.x, -5, 5);
             velocity.y = MathUtils.clampFloat(velocity.y, -5, 5);
         }
+
+
+        //Basic Collision Check, needs much more work put into, set velocity according to wall to 0
+        Point point = new Point((int)(pos.x + velocity.x), (int)(pos.y + velocity.y));
+        if(GameLogicHandler.getCollidableTiles().stream().anyMatch(n -> n.boundingBox.intersects(new BoundingBox((int)(pos.x + velocity.x), (int)(pos.y + velocity.y), 64, 64)))){
+            return;
+        }
+
 
         pos.x += velocity.x;
         pos.y += velocity.y;
